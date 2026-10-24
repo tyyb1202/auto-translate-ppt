@@ -48,6 +48,25 @@
 
 > 如果报 `npm error ENOENT ... open '/opt/buildhome/repo/package.json'`，说明构建命令是 `npm run build` 但仓库里没有 `package.json`——本仓库现在已经有这个文件，在 Cloudflare 里点「重试部署」即可。
 
+### 智谱 GLM 这类"不放行跨域"的服务商
+
+仓库里带了一个 Cloudflare Pages Function：`functions/llm/[[path]].js`。它是**同源中转**——浏览器只跟自己的站点说话，由 Cloudflare 的服务器去请求上游，跨域限制自然就不存在了。用 Git 方式连接仓库部署即可，函数会被自动识别，不用额外配置。
+
+部署好后把接口地址填成相对路径：
+
+| 服务商 | 接口地址 |
+| --- | --- |
+| 智谱 GLM | `/llm/zhipu` |
+| 通义千问 DashScope | `/llm/dashscope` |
+| DeepSeek | `/llm/deepseek` |
+| Kimi | `/llm/moonshot` |
+| 硅基流动 | `/llm/siliconflow` |
+| 其他任意服务商 | `/llm?url=https://完整地址/v1/chat/completions` |
+
+API Key 照常填在 Key 栏，页面会以 `Authorization: Bearer ...` 发出去，函数原样转发、不落盘也不打印。
+
+> 这个函数只在 Cloudflare Pages 上生效。GitHub Pages 是纯静态托管，跑不了函数，那边请直接用「说明书 6.1」里 ✅ 的服务商。
+
 ## 安全设计
 
 - 仓库里**没有**任何 API Key，代码也不读取 `.env`；Key 由使用者在网页里填写。
@@ -64,6 +83,7 @@ package.json                   只为托管平台的构建命令服务（npm run
 .github/workflows/deploy.yml   推送到 main 后自动部署到 GitHub Pages
 scripts/build-static.mjs       构建脚本：把 index.html + assets 复制到 dist/
 scripts/check-secrets.mjs      提交/部署前的密钥扫描
+functions/llm/[[path]].js      Cloudflare Pages 同源中转（智谱等不放行跨域的服务商走这里）
 preview.cjs                    本地预览用的小服务器（可选，不参与部署）
 说明书.md                      完整说明书：部署细节、接口地址、报错排查
 ```
