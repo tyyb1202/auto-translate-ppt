@@ -7,11 +7,9 @@
 
 ## 在线使用
 
-部署完成后地址形如：
+**已部署地址：<https://tyyb1202.github.io/auto-translate-ppt/>**
 
-```
-https://<你的GitHub用户名>.github.io/<仓库名>/
-```
+这个地址由本仓库 `main` 分支自动发布（每次 push 后约 1 分钟更新）。如果你 fork 或改了仓库名，地址相应变成 `https://<你的用户名>.github.io/<仓库名>/`。
 
 打开后点右上角 **⚙ 翻译引擎**，填三项即可开始：
 
