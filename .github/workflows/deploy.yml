@@ -1,0 +1,66 @@
+name: 部署到 GitHub Pages
+
+# 什么时候自动部署：
+#   1. 每次 push 到 main 分支
+#   2. 在仓库的 Actions 页面手动点「Run workflow」
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 发布到 Pages 需要这三个权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只跑一个部署，后来的排队而不是互相覆盖
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: 检查并打包
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 检查仓库里有没有 API Key
+        run: node scripts/check-secrets.mjs
+
+      # 只把网站真正需要的文件放进发布目录。
+      # 这一步是「白名单」式发布：即使以后不小心在仓库根目录放了 key.txt，
+      # 也不会被发布到公网。
+      - name: 收集要发布的文件
+        run: |
+          set -e
+          rm -rf _site
+          mkdir -p _site
+          cp -r index.html assets _site/
+          echo "即将发布："
+          find _site -maxdepth 2 -type f | head -20
+
+      - name: 配置 Pages
+        uses: actions/configure-pages@v5
+        with:
+          # 仓库还没开 Pages 时自动帮你打开，省得第一次部署失败
+          enablement: true
+
+      - name: 打包发布目录
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: 发布
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

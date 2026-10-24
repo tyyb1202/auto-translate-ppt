@@ -1,0 +1,15 @@
+# 统一换行，避免 Windows/macOS 协作时整文件被改
+* text=auto
+
+# .bat 必须是 CRLF，否则在 Windows 上双击可能失效
+*.bat text eol=crlf
+
+# 二进制资源不做换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Auto translate PPT</title>
+    <script>
+      // 直接双击 file:// 打开会被浏览器拦截（ES 模块/CORS），给出明确提示
+      if (location.protocol === 'file:') {
+        document.addEventListener('DOMContentLoaded', function () {
+          document.body.innerHTML =
+            '<div style="max-width:560px;margin:12vh auto;padding:24px 28px;' +
+            'font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.7;' +
+            'color:#1f2937;background:#fff;border:1px solid #e5e7eb;border-radius:14px;' +
+            'box-shadow:0 8px 30px rgba(0,0,0,.08)">' +
+            '<h2 style="margin:0 0 12px;color:#4f46e5">无法直接打开 😶</h2>' +
+            '<p>本程序是纯前端页面，用 <code>file://</code> 直接打开会被浏览器拦下' +
+            '（ES 模块和浏览器本地存储都要经由 HTTP 才能工作）。</p>' +
+            '<p style="margin:14px 0 6px"><strong>两种正确打开方式：</strong></p>' +
+            '<ol style="margin:0;padding-left:20px">' +
+            '<li><strong>在线使用</strong>：直接访问部署好的网址' +
+            '（GitHub Pages 的 <code>https://用户名.github.io/仓库名/</code>），什么都不用装。</li>' +
+            '<li><strong>本机预览</strong>：关闭本页面，双击 <code>本地预览.bat</code>（Windows），' +
+            '它会自动打开 <code>http://localhost:4173/</code>。</li>' +
+            '</ol>' +
+            '<p style="margin:14px 0 0;color:#6b7280;font-size:13px">' +
+            'macOS / Linux：在终端进入本文件夹执行 <code>node preview.cjs</code>，再打开上面的地址。</p>' +
+            '</div>'
+        })
+      }
+    </script>
+    <script type="module" crossorigin src="./assets/index-CFryQAhl.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-D-ADrcQ0.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

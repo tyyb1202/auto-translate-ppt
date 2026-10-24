@@ -1,0 +1,33 @@
+# ===== 绝对不要提交的东西 =====
+# 这个项目不需要任何 .env 文件：API Key 只由使用者在网页里填写，
+# 存在他自己的浏览器里，永远不会进仓库。下面这些规则是防止手滑。
+
+.env
+.env.*
+!.env.example
+
+*.key
+*.pem
+*.p12
+secrets*
+secret*
+config.local.*
+*_KEY*.txt
+*key*.txt
+
+# ===== 依赖与构建产物 =====
+node_modules/
+_site/
+dist/
+.vite/
+
+# ===== 系统与编辑器 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# ===== 日志与临时文件 =====
+*.log
+npm-debug.log*
