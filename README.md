@@ -34,6 +34,20 @@
    `https://<用户名>.github.io/<仓库名>/`。
 5. 打开网址 → 填 Key → 开始翻译。
 
+## 也可以部署到 Cloudflare Pages（国内访问通常比 github.io 快）
+
+仓库自带 `package.json` 和 `scripts/build-static.mjs`，`npm run build` 只是把 `index.html`、`assets/` 原样复制到 `dist/`，不做任何转换。在 Cloudflare Pages 里连接这个仓库后这样填：
+
+| 配置项 | 填什么 |
+| --- | --- |
+| Framework preset | `None` |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+
+不想走构建也可以用：Build command 填 `exit 0`，输出目录填 `/`（直接发布仓库根目录）。
+
+> 如果报 `npm error ENOENT ... open '/opt/buildhome/repo/package.json'`，说明构建命令是 `npm run build` 但仓库里没有 `package.json`——本仓库现在已经有这个文件，在 Cloudflare 里点「重试部署」即可。
+
 ## 安全设计
 
 - 仓库里**没有**任何 API Key，代码也不读取 `.env`；Key 由使用者在网页里填写。
@@ -46,7 +60,9 @@
 ```
 index.html                     页面入口（资源用相对路径，放在子路径下也能用）
 assets/                        打包好的 JS / CSS
+package.json                   只为托管平台的构建命令服务（npm run build）
 .github/workflows/deploy.yml   推送到 main 后自动部署到 GitHub Pages
+scripts/build-static.mjs       构建脚本：把 index.html + assets 复制到 dist/
 scripts/check-secrets.mjs      提交/部署前的密钥扫描
 preview.cjs                    本地预览用的小服务器（可选，不参与部署）
 说明书.md                      完整说明书：部署细节、接口地址、报错排查
